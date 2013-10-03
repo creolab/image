@@ -1,0 +1,21 @@
+{
+    "name": "creolab/image",
+    "description": "Manipulate images, create thumbs, crop...",
+    "keywords": ["image", "thumb", "crop", "laravel"],
+    "authors": [
+        {
+            "name": "Boris Strahija",
+            "email": "boris@creolab.hr"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.0.x"
+    },
+    "autoload": {
+        "psr-0": {
+            "Creolab\\Image": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
