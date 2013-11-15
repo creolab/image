@@ -19,6 +19,9 @@ class ImageServiceProvider extends ServiceProvider {
 	public function boot()
 	{
 		$this->package('creolab/image');
+
+		// Register theme singleton
+		$this->app->singleton('creolab.image', function() { return new \Creolab\Image\Image; });
 	}
 
 	/**
