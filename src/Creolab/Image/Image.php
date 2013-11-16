@@ -1,6 +1,6 @@
 <?php namespace Creolab\Image;
 
-use Config, File, Log;
+use File, Log;
 
 class Image {
 
@@ -8,7 +8,7 @@ class Image {
 	 * Type of library to use, defaults to GD
 	 * @var string
 	 */
-	protected $library = 'gd';
+	protected $library = 'imagick';
 
 	/**
 	 * Instance of Imagine package
@@ -20,7 +20,7 @@ class Image {
 	 * Always force overwriting of files
 	 * @var boolean
 	 */
-	public $overwrite = false;
+	public $overwrite = true;
 
 	/**
 	 * Quality of compression
@@ -78,16 +78,13 @@ class Image {
 			$targetDirName  = $width . 'x' . $height . ($crop ? '_crop' : '');
 			$targetDirPath  = $sourceDirPath . '/' . $targetDirName . '/';
 			$targetFilePath = $targetDirPath . $fileName;
-			$targetUrl      = url($info['dirname'] . '/' . $targetDirName . '/' . $fileName);
+			$targetUrl      = asset($info['dirname'] . '/' . $targetDirName . '/' . $fileName);
 
 			// Create directory if missing
 			try
 			{
-				try {
-					if ( ! File::isDirectory($targetDirPath) and $targetDirPath) @File::makeDirectory($targetDirPath);
-				} catch(\Exception $e) {
-					die();
-				}
+				// Create dir if missing
+				if ( ! File::isDirectory($targetDirPath) and $targetDirPath) @File::makeDirectory($targetDirPath);
 
 				// Set the size
 				$size = new \Imagine\Image\Box($width, $height);
@@ -98,8 +95,8 @@ class Image {
 				if ($this->overwrite or ! File::exists($targetFilePath) or (File::lastModified($targetFilePath) < File::lastModified($sourceFilePath)))
 				{
 					$this->imagine->open($sourceFilePath)
-					              ->thumbnail($size, $mode)
-					              ->save($targetFilePath, array('quality' => $quality));
+								  ->thumbnail($size, $mode)
+								  ->save($targetFilePath, array('quality' => $quality));
 				}
 			}
 			catch (\Exception $e)
@@ -124,25 +121,21 @@ class Image {
 	}
 
 	/**
-	 * Creates image dimmensions based on a configuration
+	 * Creates image dimensions based on a configuration
+	 *
 	 * @param  string $url
-	 * @param  array  $dimmensions
+	 * @param  array  $dimensions
 	 * @return void
 	 */
-	public function createDimmensions($url, Array $dimmensions)
+	public function createDimensions($url, $dimensions = array(), $options = array())
 	{
-		// Get default dimmensions
-		$defaultDimensions = Config::get('media.image_dimmensions');
-
-		if (is_array($defaultDimensions)) $dimmensions = array_merge($defaultDimensions, $dimmensions);
-
-		foreach ($dimmensions as $dimmension)
+		foreach ($dimensions as $dimension)
 		{
 			// Get dimmensions and quality
-			$width   = (int) $dimmension[0];
-			$height  = isset($dimmension[1]) ?  (int) $dimmension[1] : $width;
-			$crop    = isset($dimmension[2]) ? (bool) $dimmension[2] : false;
-			$quality = isset($dimmension[3]) ?  (int) $dimmension[3] : $this->quality;
+			$width   = (int) $dimension[0];
+			$height  = isset($dimension[1]) ?  (int) $dimension[1] : $width;
+			$crop    = isset($dimension[2]) ? (bool) $dimension[2] : false;
+			$quality = isset($dimension[3]) ?  (int) $dimension[3] : array_get($options, 'quality', $this->quality);
 
 			// Run resizer
 			$img = $this->resize($url, $width, $height, $crop, $quality);
