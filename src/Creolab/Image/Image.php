@@ -20,7 +20,7 @@ class Image {
 	 * Always force overwriting of files
 	 * @var boolean
 	 */
-	public $overwrite = true;
+	public $overwrite = false;
 
 	/**
 	 * Quality of compression
