@@ -8,7 +8,7 @@ Framework agnostic coming soon.
 
 Simply add the following to your **composer.json** file:
 
-    "creolab/shop": "dev-master"
+    "creolab/image": "dev-master"
 
 And you can also add the service provider to **app/config/app.ph**:
 
