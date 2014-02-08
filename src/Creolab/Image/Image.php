@@ -73,8 +73,8 @@ class Image {
 
 			// Directories and file names
 			$fileName       = $info['basename'];
-			$sourceDirPath  = public_path() . $info['dirname'];
-			$sourceFilePath = $sourceDirPath . '/' . $fileName;
+			$sourceDirPath  = rtrim(public_path(), '/') . '/' . $info['dirname'];
+			$sourceFilePath = rtrim($sourceDirPath, '/') . '/' . $fileName;
 			$targetDirName  = $width . 'x' . $height . ($crop ? '_crop' : '');
 			$targetDirPath  = $sourceDirPath . '/' . $targetDirName . '/';
 			$targetFilePath = $targetDirPath . $fileName;

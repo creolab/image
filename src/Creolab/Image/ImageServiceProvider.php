@@ -18,10 +18,18 @@ class ImageServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('creolab/image');
+		// Register the package
+		$this->package('creolab/image', 'image', __DIR__.'/../../');
 
 		// Register theme singleton
 		$this->app->singleton('creolab.image', function() { return new \Creolab\Image\Image; });
+
+		// Also register a facade
+		if ($alias = $this->app['config']->get('image::alias'))
+		{
+			$loader = \Illuminate\Foundation\AliasLoader::getInstance();
+			$loader->alias($alias, '\Creolab\Image\ImageFacade');
+		}
 	}
 
 	/**
