@@ -61,4 +61,13 @@ class ImageItem {
 		return Image::resize($this->src, $width, $height, $crop, $quality);
 	}
 
+	/**
+	 * String representation
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return $this->src();
+	}
+
 }
