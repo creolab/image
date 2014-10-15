@@ -10,7 +10,7 @@ Simply add the following to your **composer.json** file:
 
     "creolab/image": "dev-master"
 
-And you can also add the service provider to **app/config/app.ph**:
+And you can also add the service provider to **app/config/app.php**:
 
     'Creolab\Image\ImageServiceProvider',
 
